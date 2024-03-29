@@ -3,8 +3,8 @@ title: "Final Project 2"
 author: "Ngun Tial"
 date: "2024-02-20"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 toc: yes
 ---
 ## Introduction
@@ -16,59 +16,50 @@ This report analyzes the `ocd_patient_dataset.csv` dataset, which contains infor
 - Identify if there are any patterns or trends in certain ethnicities or family history of OCD
 
 ## Data Loading
-
-```{r, read-data-from-local_directory, echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(readr)
-ocd_data <- read_csv("~/Downloads/final_project/data/ocd_patient_dataset.csv")
+```{r, here-i-am, include = FALSE}
+here::i_am(
+  "report.rmd")
 ```
+
 
 ## Demographic Characteristics
 This table provides insights into the education level reported by individuals of different ethnicity within the OCD patient dataset. 
 
 ```{r, demographic table, echo=FALSE}
-library(knitr)
 # Combine tables for demographic characteristics
-Demographics_Table <- cbind(
-  Gender = table(ocd_data$Gender),
-  Ethnicity = table(ocd_data$Ethnicity),
-  `Marital Status` = table(ocd_data$`Marital Status`),
-  `Education Level` = table(ocd_data$`Education Level`)
-)
-
-# Convert table to data frame
-Demographics_Table_df <- as.data.frame(Demographics_Table)
-
-# Display the table using kable
-kable(Demographics_Table_df, caption = "Table 1: Demographic Characteristics of OCD Patients")
+readRDS(
+  here::here("output/Demographics_Table.rds")
+  )
 ```
 
-## Graph 
+## Graphical Analysis 
 Analyze the relationship between demographic factors, duration of symptoms, OCD types, and severity
 
 ```{r, echo=FALSE}
-library(ggplot2)
+#| fig.align = "center",
+#| out.width = "600px"
+library(knitr)
+knitr::include_graphics(
+  here::here("output/ggplot_data.png")
+  )
 
-# Create a combined boxplot
-ggplot_data <- ggplot(ocd_data, aes(x = Gender, y = `Duration of Symptoms (months)`, fill = Gender)) +
-  geom_boxplot() +
-  labs(title = "Relationship between Gender and Duration of Symptoms",
-       x = "Gender",
-       y = "Duration of Symptoms (months)") +
-  theme_minimal() +
-  facet_wrap(~ `Obsession Type`, scales = "free", ncol = 2) +
-  geom_boxplot(aes(x = `Obsession Type`, y = `Y-BOCS Score (Obsessions)`, fill = `Obsession Type`), position = "dodge", alpha = 0.7) +
-  labs(title = "Relationship between Obsession Type and Y-BOCS Score",
-       x = "Obsession Type",
-       y = "Y-BOCS Score (Obsessions)") +
-  geom_boxplot(aes(x = `Compulsion Type`, y = `Y-BOCS Score (Compulsions)`, fill = `Compulsion Type`), position = "dodge", alpha = 0.7) +
-  labs(title = "Relationship between Compulsion Type and Y-BOCS Score",
-       x = "Compulsion Type",
-       y = "Y-BOCS Score (Compulsions)") +
-  theme(legend.position = "bottom")
-print(ggplot_data
-      )
+knitr::include_graphics(
+  here::here("output/obsession_duration.png")
+  )
+
+knitr::include_graphics(
+  here::here("output/compulsion_duration.png")
+  )
+
+knitr::include_graphics(
+  here::here("output/compulsion_severity.png")
+  )
+
+knitr::include_graphics(
+  here::here("output/obsession_severity.png")
+  )
 ```
+
 
 
 

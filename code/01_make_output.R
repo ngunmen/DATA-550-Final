@@ -2,12 +2,20 @@ here::i_am(
   "code/01_make_output.R"
 )
 
-Demoraphics_Table <- cbind(
-  Gender = table(ocd_data$Gender),
-  Ethnicity = table(ocd_data$Ethnicity),
-  `Marital Status` = table(ocd_data$`Marital Status`),
-  `Education Level` = table(ocd_data$`Education Level`)
+pacman::p_load(
+  gtsummary
 )
+
+ocd_data<-readRDS(
+  file=here::here("data/ocd_data.rds")
+)
+
+
+Demoraphics_Table <- ocd_data %>%
+  select(Gender, Ethnicity, Marital.Status, Education.Level) %>%
+  tbl_summary(
+    by= Ethnicity
+) 
 
 
 saveRDS(
